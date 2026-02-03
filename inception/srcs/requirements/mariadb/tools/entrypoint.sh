@@ -16,7 +16,11 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 
 	#initialized mariadb with mysql user and define data directory
 	mariadb-install-db --user=mysql --datadir=/var/lib/mysql
+    MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+    MYSQL_PASSWORD=$(cat /run/secrets/db_password)
 
+    echo "root password will be : $MYSQL_ROOT_PASSWORD"
+    echo "user password will be : $MYSQL_PASSWORD"	
 	#initialzed in bootstrap way
 	mysqld --bootstrap <<EOF
 FLUSH PRIVILEGES;

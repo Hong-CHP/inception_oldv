@@ -13,7 +13,7 @@ clean:
 
 fclean: clean
 	sudo rm -rf /home/hporta-c/data
-	docker compose prune -af
+	docker system prune -af
 
 re: clean up
 

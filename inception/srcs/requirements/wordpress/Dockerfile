@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim
 
-RUN apt update && apt install -y wget tar \
+RUN apt update && apt install -y wget tar curl \
 		php-fpm php-mysql php-gd php-xml php-curl php-zip \
 	&& mkdir -p /usr/src/wordpress \
 	&& wget https://wordpress.org/latest.tar.gz \

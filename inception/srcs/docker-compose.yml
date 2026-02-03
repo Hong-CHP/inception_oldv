@@ -3,11 +3,13 @@ secrets:
     file: ../secrets/db_password.txt
   db_root_password:
     file: ../secrets/db_root_password.txt
+  credentials:
+    file: ../secrets/credentials.txt
 
 services:
   mariadb:
     container_name: mariadb
-    image: mariadb
+    # image: mariadb
     build: requirements/mariadb
     restart: always
     env_file:
@@ -32,6 +34,7 @@ services:
       - MYSQL_PASSWORD_FILE=/run/secrets/db_password
     secrets:
       - db_password
+      - credentials
     volumes:
       - ${DATA_PATH}/wordpress:/var/www/html
     networks:

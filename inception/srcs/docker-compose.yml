@@ -1,0 +1,58 @@
+secrets:
+  db_password:
+    file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    build: requirements/mariadb
+    restart: always
+    env_file:
+      - .env
+    secrets:
+      - db_password
+      - db_root_password
+    volumes:
+      - ${DATA_PATH}/mysql:/var/lib/mysql
+    networks:
+      - inception
+
+  wordpress:
+    container_name: wordpress
+    build: requirements/wordpress
+    restart: always
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    environment:
+      - MYSQL_PASSWORD_FILE=/run/secrets/db_password
+    secrets:
+      - db_password
+    volumes:
+      - ${DATA_PATH}/wordpress:/var/www/html
+    networks:
+      - inception
+
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    restart: always
+    depends_on:
+      - wordpress
+    ports:
+      - 443:443
+    env_file:
+      - .env
+    volumes:
+      - ${DATA_PATH}/wordpress:/var/www/html
+    networks:
+      - inception
+
+networks:
+    inception:
+      name: inception
+      driver: bridge

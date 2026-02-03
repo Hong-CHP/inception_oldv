@@ -11,6 +11,10 @@ down:
 clean:
 	$(COMPOSE) down -v
 
+fclean: clean
+	sudo rm -rf /home/hporta-c/data
+	docker compose prune -af
+
 re: clean up
 
 .PHONY: all up down clean re
